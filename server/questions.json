@@ -1,0 +1,33 @@
+{ "questions" : [
+    { 
+        "question" : "What is the name of the Shadow's homeworld on Babylon 5?",
+        "answer" : "Z'ha'dum",
+        "decoys" : [ "Galifrey", "Hoth", "Arrakis", "Tagora", "Nihil", "Daxam", "Acheron", "Skaro", "Crematoria", "QonoS" ]
+    },
+    { 
+        "question": "In Stargate SG-1, what galaxy is the lost city of Atlantis discovered to reside in?",
+        "answer" : "Pegasus",
+        "decoys" : [ "Andromeda", "Seraphia", "Triangulum", "Krell", "Virgo", "Kaliem", "Ida", "Shi'ar", "Xeno", "Isop" ]
+    },
+    { 
+        "question" : "What is the name of the Shadow's homeworld on Babylon 5?",
+        "answer" : "Z'ha'dum",
+        "decoys" : [ "Galifrey", "Hoth", "Arrakis", "Tagora", "Nihil", "Daxam", "Acheron", "Skaro", "Crematoria", "QonoS" ]
+    },
+    { 
+        "question": "In Stargate SG-1, what galaxy is the lost city of Atlantis discovered to reside in?",
+        "answer" : "Pegasus",
+        "decoys" : [ "Andromeda", "Seraphia", "Triangulum", "Krell", "Virgo", "Kaliem", "Ida", "Shi'ar", "Xeno", "Isop" ]
+    },
+    { 
+        "question" : "What is the name of the Shadow's homeworld on Babylon 5?",
+        "answer" : "Z'ha'dum",
+        "decoys" : [ "Galifrey", "Hoth", "Arrakis", "Tagora", "Nihil", "Daxam", "Acheron", "Skaro", "Crematoria", "QonoS" ]
+    },
+    { 
+        "question": "In Stargate SG-1, what galaxy is the lost city of Atlantis discovered to reside in?",
+        "answer" : "Pegasus",
+        "decoys" : [ "Andromeda", "Seraphia", "Triangulum", "Krell", "Virgo", "Kaliem", "Ida", "Shi'ar", "Xeno", "Isop" ]
+    }      
+    ] 
+}
