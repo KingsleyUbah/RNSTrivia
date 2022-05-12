@@ -1,30 +1,48 @@
 import React from 'react'
-import listData from '../test'
-import { Card } from 'react-bootstrap'
+import store from '../state/engine'
+import { Card, Button, Spinner } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
 
 export default function GameLeaderboard() {
+    const listData = useSelector(state => state.modals.leaderboard.listData)
     
     return(
         <div>            
-            <h1 style={{ textAlign: 'left', marginBottom: '30px' }}>Current Leaderboard</h1>
+            <h1 style={{ textAlign: 'center', color: 'red', marginBottom: '30px' }}>Current Leaderboard</h1>
             
-            <Card style={{ textAlign: 'left', marginBottom: '30px', width: '60rem' }}>            
+            <Card style={{ textAlign: 'center', marginBottom: '30px', width: '80%' }}>            
                 <Card.Body>     
                     <ul style={{ listStyle: 'none' }}>
                         {listData.map((item, i) => {
                             return (
                                 <li key={i} style={{ marginBottom: '10px' }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                        <span style={{ fontWeight: 'bold' }}>{item.playerName} {item.playerID === 577342 ? "(YOU)" : ""}</span>
+                                    <Card
+                                        bg="primary"
+                                        style={{ width: '100%' }}
+                                    >
+                                        <Card.Body style={{ display: 'flex', justifyContent: 'space-between', color: 'white' }}>
+                                        <span style={{ fontWeight: 'bold' }}>{item.playerName} {store.getState().playerInfo.id === item.playerID ? "(YOU)" : ""}</span>
                                         <span style={{ fontWeight: 'bold' }}>{item.points} points</span>
-                                    </div>
+                                        </Card.Body>                                        
+                                    </Card>
                             </li>
                             )
                         })}
                     </ul>                               
                 </Card.Body>
             </Card>          
-           <h1 style={{ textAlign: 'left', color: 'red'}}>Awaiting Question</h1>
+            <Button variant="primary" size="lg" disabled>
+                <Spinner
+                as="span"
+                animation="grow"
+                size="lg"
+                role="status"
+                aria-hidden="true"
+                />
+                <span>
+                    Awaiting Question...
+                </span>
+            </Button>
         </div>
     )
 }

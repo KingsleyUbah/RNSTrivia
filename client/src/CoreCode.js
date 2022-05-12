@@ -1,3 +1,5 @@
+import store from './state/engine'
+
 const CoreCode = {
     serverIP : "127.0.0.1",
     io : null,
@@ -10,19 +12,21 @@ const CoreCode = {
         ) {
         return;
         }
+
         store.dispatch(showHideModal("namePrompt", false));
         CoreCode.io = io(`http://${CoreCode.serverIP}`);
+
         if (store.getState().modals.isAdmin) {
-        CoreCode.io.on("connected", function() { console.log("ADMIN CONNECTED"); });
-        CoreCode.io.on("adminMessage", CoreCode.adminMessage);
-        store.dispatch(showHideModal("admin", true));
+            CoreCode.io.on("connected", function() { console.log("ADMIN CONNECTED"); });
+            CoreCode.io.on("adminMessage", CoreCode.adminMessage);
+            store.dispatch(showHideModal("admin", true));
         } else {
-        CoreCode.io.on("connected", CoreCode.connected);
-        CoreCode.io.on("validatePlayer", CoreCode.validatePlayer);
-        CoreCode.io.on("newGame", CoreCode.newGame);
-        CoreCode.io.on("nextQuestion", CoreCode.nextQuestion);
-        CoreCode.io.on("answerOutcome", CoreCode.answerOutcome);
-        CoreCode.io.on("endGame", CoreCode.endGame);
+            CoreCode.io.on("connected", CoreCode.connected);
+            CoreCode.io.on("validatePlayer", CoreCode.validatePlayer);
+            CoreCode.io.on("newGame", CoreCode.newGame);
+            CoreCode.io.on("nextQuestion", CoreCode.nextQuestion);
+            CoreCode.io.on("answerOutcome", CoreCode.answerOutcome);
+            CoreCode.io.on("endGame", CoreCode.endGame);
         }
     },
     connected : function(inData) {
@@ -116,3 +120,5 @@ const CoreCode = {
         store.dispatch(setCurrentStatus(inData.msg));
     }
 }
+
+export default CoreCode
