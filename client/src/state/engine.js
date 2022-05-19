@@ -120,7 +120,7 @@ let preloadedState = {
         currentQuestion : null, selectedAnswer : -1
     },
     modals : {
-        namePromptVisible : false, endGameVisible : false, adminVisible : false,
+        namePromptVisible : true, endGameVisible : false, adminVisible : false,
         endGameMessage : null, isAdmin : null, currentStatus : ""
     },
     playerInfo : { id : null, name : null }

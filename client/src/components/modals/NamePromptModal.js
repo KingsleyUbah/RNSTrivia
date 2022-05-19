@@ -4,10 +4,45 @@ import store from '../../state/engine'
 import { useDispatch } from 'react-redux'
 import { setPlayerName, setIsAdmin } from '../../state/engine'
 import CoreCode from '../../CoreCode'
+import { useNavigate } from 'react-router-dom'
+import io from "socket.io-client";
+import { showHideModal } from "../../state/engine"
 
-export default function NamePromptModal() {
+export default function NamePromptModal() {    
     const [checked, setChecked] = useState(true); 
     const dispatch = useDispatch()    
+
+    let navigate = useNavigate()    
+
+    const startup = () => {
+        if (!store.getState().modals.isAdmin &&
+        (store.getState().playerInfo.name == null ||
+        store.getState().playerInfo.name.trim() === "" ||
+        store.getState().playerInfo.name.length === 1)
+        ) {
+        return;
+        }
+
+        store.dispatch(showHideModal("namePrompt", false));
+        CoreCode.io = io(`http://${CoreCode.serverIP}:8000`);
+
+        if (store.getState().modals.isAdmin) {
+            CoreCode.io.on("connected", function() { 
+                console.log("ADMIN CONNECTED"); 
+                console.log(store.getState().modals.isAdmin)
+                store.dispatch(showHideModal("admin", true));
+                navigate("/")                
+            });
+            CoreCode.io.on("adminMessage", CoreCode.adminMessage);            
+        } else {
+            CoreCode.io.on("connected", CoreCode.connected);
+            CoreCode.io.on("validatePlayer", CoreCode.validatePlayer);
+            CoreCode.io.on("newGame", CoreCode.newGame);
+            CoreCode.io.on("nextQuestion", CoreCode.nextQuestion);
+            CoreCode.io.on("answerOutcome", CoreCode.answerOutcome);
+            CoreCode.io.on("endGame", CoreCode.endGame);
+        }
+    }
 
     return(
         <div>            
@@ -53,7 +88,7 @@ export default function NamePromptModal() {
                         <Button variant="primary" type="submit" onClick={(e) => {
                             e.preventDefault();
 
-                            CoreCode.startup();
+                            startup();
                         }}>
                             Submit
                         </Button>

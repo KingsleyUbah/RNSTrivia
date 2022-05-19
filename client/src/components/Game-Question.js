@@ -1,13 +1,16 @@
 import React, { useState } from 'react'
 import question from '../test-question'
 import { Button } from 'react-bootstrap'
-import { answerButtonHighlight } from '../../state/engine'
-import { useSelector, useDispatch } from 'react-redux'
+import store, { answerButtonHighlight } from '../state/engine'
+import { useDispatch } from 'react-redux'
+import CoreCode from '../CoreCode'
+import { useNavigate } from 'react-router-dom'
 
-export default function GameQuestion() {  
-    const listData = useSelector(state => state.modals.leaderboard.listData)
+
+export default function GameQuestion() {      
     const dispatch = useDispatch()
     const [choice, setChoice] = useState(0)
+    CoreCode.navigate = useNavigate()
 
     return(
         <>

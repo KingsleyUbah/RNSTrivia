@@ -1,9 +1,16 @@
-import store from './state/engine'
+import store, {
+    answerButtonHighlight, resetAllButtons, setCurrentStatus, setGameData,
+    setEndGameMessage, setPlayerID, setQuestion, showHideModal,
+    updateAnswerButtonLabel, updateLeadboard
+  } from './state/engine'
+import io from "socket.io-client";
+
+
 
 const CoreCode = {
-    serverIP : "127.0.0.1",
+    serverIP : "localhost",
     io : null,
-    mainNavigator : null,
+    navigate : null,
     startup : () => {
         if (!store.getState().modals.isAdmin &&
         (store.getState().playerInfo.name == null ||
@@ -14,12 +21,17 @@ const CoreCode = {
         }
 
         store.dispatch(showHideModal("namePrompt", false));
-        CoreCode.io = io(`http://${CoreCode.serverIP}`);
+        CoreCode.io = io(`http://${CoreCode.serverIP}:8000`);
 
         if (store.getState().modals.isAdmin) {
-            CoreCode.io.on("connected", function() { console.log("ADMIN CONNECTED"); });
-            CoreCode.io.on("adminMessage", CoreCode.adminMessage);
-            store.dispatch(showHideModal("admin", true));
+            CoreCode.io.on("connected", function() { 
+                console.log("ADMIN CONNECTED"); 
+                console.log(store.getState().modals.isAdmin)
+                store.dispatch(showHideModal("admin", true));
+                this.navigate("/players")
+                console.log(store.getState())
+            });
+            CoreCode.io.on("adminMessage", CoreCode.adminMessage);            
         } else {
             CoreCode.io.on("connected", CoreCode.connected);
             CoreCode.io.on("validatePlayer", CoreCode.validatePlayer);
@@ -30,18 +42,23 @@ const CoreCode = {
         }
     },
     connected : function(inData) {
+        console.log("connected")
         CoreCode.io.emit("validatePlayer", {
             playerName : store.getState().playerInfo.name
         });
     },
     validatePlayer : function(inData) {
+        console.log("validating player")
         store.dispatch(setPlayerID(inData.playerID));
+
+        console.log(inData)
+        console.log(store.getState())
         
         if (inData.inProgress) {
             inData.gameData.asked = inData.asked;
             store.dispatch(setGameData(inData.gameData));
             store.dispatch(updateLeadboard(inData.leaderboard));
-            CoreCode.mainNavigator.navigate("GameLeaderboardScreen");
+            CoreCode.navigate("/rankings");            
         }
     },
     newGame : function(inData) {
@@ -50,7 +67,8 @@ const CoreCode = {
         
         store.dispatch(setGameData(inData.gameData));
         store.dispatch(updateLeadboard(inData.leaderboard));
-        CoreCode.mainNavigator.navigate("GameLeaderboardScreen");
+        CoreCode.navigate("/rankings");
+        // store.dispatch(showHideModal("gameLeaderboard", true));
     },
     nextQuestion : function(inData) {
         store.dispatch(answerButtonHighlight(-1));
@@ -61,7 +79,7 @@ const CoreCode = {
         }
         
         store.dispatch(resetAllButtons());
-        CoreCode.mainNavigator.navigate("GameQuestionScreen");
+        CoreCode.navigate("/question");
     },
     answerOutcome : function(inData) {
         let msg = "Sorry! That's not correct :(";
@@ -76,17 +94,16 @@ const CoreCode = {
         store.dispatch(setGameData(inData.gameData));
         store.dispatch(updateLeadboard(inData.leaderboard));
 
-        CoreCode.mainNavigator.navigate("GameLeaderboardScreen");
-        Toast.show({ text: msg, buttonText : "Ok", type : type, duration : 3000
-        });
+        CoreCode.navigate("/rankings");
+        // Toast.show({ text: msg, buttonText : "Ok", type : type, duration : 3000});
 
-        Vibration.vibrate(1000);
+        // Vibration.vibrate(1000);
     },
     endGame : function(inData) {
         inData.gameData.asked = inData.asked;
         store.dispatch(setGameData(inData.gameData));
         store.dispatch(updateLeadboard(inData.leaderboard));
-        CoreCode.mainNavigator.navigate("GameLeaderboardScreen");
+        CoreCode.navigate("/rankings");
         
         if (inData.leaderboard[0].playerID === store.getState().playerInfo.id) {
             store.dispatch(setEndGameMessage("Congratulations! You were the winner!"));

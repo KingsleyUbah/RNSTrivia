@@ -1,11 +1,14 @@
 import React from 'react'
 import { Card } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import CoreCode from '../CoreCode'
 
 
 export default function InfoPage() {
     const player = useSelector(state => state.playerInfo)    
     const gameData = useSelector(state => state.gameData)
+    CoreCode.navigate = useNavigate()    
 
     return(
         <>

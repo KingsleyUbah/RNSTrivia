@@ -1,10 +1,13 @@
 import React from 'react'
 import store from '../state/engine'
+import CoreCode from '../CoreCode'
 import { Card, Button, Spinner } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 export default function GameLeaderboard() {
-    const listData = useSelector(state => state.modals.leaderboard.listData)
+    const listData = useSelector(state => state.leaderboard.listData) 
+    CoreCode.navigate = useNavigate()   
     
     return(
         <div>            

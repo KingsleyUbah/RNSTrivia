@@ -2,9 +2,11 @@ import React from 'react'
 import { Modal, Badge, Button } from 'react-bootstrap'
 import CoreCode from '../../CoreCode'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 export default function AdminModal() {
-    const currentStatus = useSelector(state => state.modals.currentStatus)
+    const currentStatus = useSelector(state => state.modals.currentStatus)    
+    CoreCode.navigate = useNavigate()
 
     return(
         <div>            

@@ -1,7 +1,11 @@
 import React from 'react'
 import { Modal, Alert } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
+import CoreCode from '../../CoreCode'
 
-export default function EndGameModal() { 
+export default function EndGameModal() {     
+    CoreCode.navigate = useNavigate()
+
     return(
         <Modal
             show={true}            
